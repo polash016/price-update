@@ -4,23 +4,29 @@ import { BsArrowRight, BsArrowUp } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
 function App() {
-  const [value, setValue] = useState(() => {
-    const storedValue = localStorage.getItem("lastValue");
-    return storedValue ? parseFloat(storedValue) : 990000;
-  });
+  const [value, setValue] = useState(0);
+  const [increment, setIncrement] = useState(0);
+
+  useEffect(() => {
+    fetch("https://todo-server-bay.vercel.app/house-price")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setValue(data[0].valuation_dollars);
+        setIncrement(data[0].appreciation_per_second);
+      });
+  }, []);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const randomIncrement = (Math.random() * 0.5 + 0.01).toFixed(2);
-      const newValue = (
-        parseFloat(value) + parseFloat(randomIncrement)
-      ).toFixed(2);
-      setValue(newValue);
-      localStorage.setItem("lastValue", newValue);
+      console.log("10 x", increment * 10000);
+      console.log("value", value);
+      setValue((prevValue) => prevValue + parseFloat(increment * 10000)); // multiplied to show the change faster
     }, 1000);
 
     return () => clearInterval(intervalId);
-  }, [value]);
+  }, [value, increment]);
+
   return (
     <div className="md:flex gap-4 mt-6 w-[90%] mx-auto">
       <div className="border border-gray-400 bg-[#F2F7FA] p-4 w-full md:w-[50%]">
@@ -45,9 +51,10 @@ function App() {
             </div>
           </div>
           <div className="text-center space-y-4 mt-12">
-            <h1 className="animated-value text-6xl font-bold text-[#0E446B]">
-              ${value}
+            <h1 className="text-6xl font-bold text-[#0E446B]">
+              ${value.toFixed(2)}
             </h1>
+
             <div className="flex items-center justify-center gap-2 text-[#00986C] font-bold text-xl">
               <BsArrowUp />
               <h1>
