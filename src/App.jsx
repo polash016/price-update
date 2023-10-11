@@ -28,8 +28,8 @@ function App() {
   }, [value, increment]);
 
   return (
-    <div className="md:flex gap-4 mt-6 w-[90%] mx-auto">
-      <div className="border border-gray-400 bg-[#F2F7FA] p-4 w-full md:w-[50%]">
+    <div className="md:flex gap-4 mt-6 w-[80%] mx-auto">
+      <div className="border bg-[#F2F7FA] p-4 w-full md:w-[50%]">
         <div className="mt-10 text-center mb-3">
           <h1 className="text-4xl font-semibold text-[#809CAF] mb-3">
             Plunk Home Value<sup>TM</sup>
